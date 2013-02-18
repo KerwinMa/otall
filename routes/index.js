@@ -2,6 +2,8 @@
 /*
  * GET home page.
  */
+ 
+var Project = require('../models/project.js');
 
 exports.index = function(req, res){
   res.render('index', { title: 'Home' });
@@ -16,7 +18,31 @@ exports.newPrj = function(req, res){
 };
 
 exports.doNewPrj = function(req, res){
-
+  var prjname = req.body.prjname;
+  
+  //检查项目是否已经存在
+  Project.get(prjname, function(err, prj){
+  	if(prj)
+  		err = '项目已存在';
+  	if(err){
+  		req.flash('error',err);
+  		return res.redirect('/newPrj');
+  	}
+  	//如果不存在则新增项目
+  	var newPrj = new Project({
+  		name: req.body.prjname,
+  		appleAppIDs: req.body.appleAppIDs
+  	});
+  	newPrj.save(function(err){
+  		if(err){
+  			req.flash('error',err);
+  			return res.redirect('/newPrj');
+  		}
+  		req.session.prj = newPrj;
+  		req.flash('success','项目创建成功');
+  		req.redirect('/');
+  	});
+  });
 };
 
 exports.upload = function(req, res){
