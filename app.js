@@ -26,7 +26,7 @@ var sessionStore = new MongoStore(
 var app = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 3333);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());

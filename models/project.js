@@ -76,7 +76,7 @@ Project.getAll = function getAll(callback){
 				return callback(err);
 			}
 		
-			collection.find().toArray(function(err,docs){
+			collection.find().sort({time:-1}).toArray(function(err,docs){
 				mongodb.close();
 				if(err){
 					callback(err, null);

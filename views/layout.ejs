@@ -10,7 +10,22 @@
     </style>
   </head>
   <body>
-	<%- body %>
-    <hr />
+      <div id="container" class="container">
+        <% if (success) { %>
+          <div class="alert alert-success">
+            <%= success %>
+          </div>
+        <% } %>
+        <% if (error) { %>
+          <div class="alert alert-error">
+            <%= error %>
+          </div>
+        <% } %>
+        <%- body %>
+        <hr />
+        <footer>
+          <p><a href="javascript:;">DreamInGame</a> 2013</p>
+        </footer>
+      </div>
   </body>
 </html>
