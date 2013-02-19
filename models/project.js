@@ -37,6 +37,7 @@ Project.prototype.save = function save(callback) {
 	});
 };
 
+//
 Project.get = function get(projectName, callback) {
 	mongodb.open(function(err, db) {
 		if (err) {
@@ -60,5 +61,35 @@ Project.get = function get(projectName, callback) {
 				}
 			});
 		});
+	});
+};
+
+Project.getAll = function getAll(callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+	
+		db.collection('projects', function(err, collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+		
+			collection.find().toArray(function(err,docs){
+				mongodb.close();
+				if(err){
+					callback(err, null);
+				}
+			
+				var prjs = [];
+				docs.forEach(function(doc,index){
+					var prj = new Project(doc);
+					prjs.push(prj);
+				});
+			
+				callback(null, prjs);
+			});
+		});	
 	});
 };

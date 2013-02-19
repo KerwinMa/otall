@@ -1,4 +1,3 @@
-
 /*
  * GET home page.
  */
@@ -6,7 +5,16 @@
 var Project = require('../models/project.js');
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Home' });
+	Project.getAll(function(err,prjs){
+		if(err){
+			prjs = [];
+		}
+		
+		res.render('index',{
+			title: '首页',
+			prjs: prjs
+		});
+	});
 };
 
 exports.project = function(req, res){
@@ -40,7 +48,7 @@ exports.doNewPrj = function(req, res){
   		}
   		req.session.prj = newPrj;
   		req.flash('success','项目创建成功');
-  		req.redirect('/');
+  		res.redirect('/');
   	});
   });
 };
