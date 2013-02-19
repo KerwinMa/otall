@@ -1,20 +1,45 @@
-<form class="form-horizontal" method="post">
-  <fieldset>
-    <legend>建立新项目</legend>
-    <div class="control-group">
-      <label class="control-label" for="username">项目名称</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="prjname" name="prjname">
-      </div>
+<script language="JavaScript">
+  function checkSubmit(form){
+  	var name = form.prjname.value;
+  	if(name.length==0)
+  	{
+  		alert("请输入项目名称!");
+  	}
+	else
+	{
+		form.submit();
+	}
+  }
+</script>
+<div data-role="page" id="page1">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="/" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            返回
+        </a>
+        <h3>
+            创建项目
+        </h3>
     </div>
-    <div class="control-group">
-      <label class="control-label" for="username">Apple AppID(可多个用逗号隔开)</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="appleAppIDs" name="appleAppIDs">
-      </div>
+    <div data-role="content">
+        <form method="POST">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="prjname">
+                        项目名称
+                    </label>
+                    <input name="prjname" id="prjname" placeholder="" value="" type="text">
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="appleAppIDs">
+                        iOS AppID(可多个用,分开）
+                    </label>
+                    <textarea name="appleAppIDs" id="appleAppIDs" placeholder=""></textarea>
+                </fieldset>
+            </div>
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit">
+        </form>
     </div>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">创建</button>
-    </div>
-  </fieldset>
-</form>
+</div>
