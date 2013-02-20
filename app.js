@@ -55,6 +55,7 @@ app.get('/', routes.index);
 app.get('/newPrj', routes.newPrj);
 app.post('/newPrj', routes.doNewPrj);
 app.get('/p/:project', routes.project);
+app.post('/p/:project', routes.upload);
 app.get('/upload', routes.upload);
 
 

@@ -1,14 +1,9 @@
 <script language="JavaScript">
   function checkSubmit(form){
-  	var name = form.prjname.value;
-  	if(name.length==0)
+  	if(form.prjname.value.length==0)
   	{
   		alert("请输入项目名称!");
   	}
-	else
-	{
-		form.submit();
-	}
   }
 </script>
 <div data-role="page" id="page1">
@@ -22,7 +17,7 @@
         </h3>
     </div>
     <div data-role="content">
-        <form method="POST">
+        <form method="POST" data-ajax="false">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup">
                     <label for="prjname">
@@ -34,12 +29,22 @@
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup">
                     <label for="appleAppIDs">
-                        iOS AppID(可多个用,分开）
+                        iOS AppID(多个ID用","分隔）
                     </label>
                     <textarea name="appleAppIDs" id="appleAppIDs" placeholder=""></textarea>
                 </fieldset>
             </div>
-			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit">
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit" onClick="checkSubmit(this.form)">
         </form>
     </div>
+    <% if (success) { %>
+		<div data-role="content" id="success">
+			<p><%= success %><p>
+		</div>
+    <% } %>
+    <% if (error) { %>
+		<div data-role="content" id="error">
+			<p><%= error %><p>
+		</div>
+    <% } %>
 </div>

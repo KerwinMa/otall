@@ -1,10 +1,81 @@
-<div>
-	<a href="/">返回首页</a>
-	<hr/>
-	<ul>
-    	<li><a href="/upload">上传版本</a></li>
-    </ul>
-	<hr/>
-	工程名称：<%= prj.name %>
-	Apple AppIDs: <%= prj.appleAppIDs %>
+<script language="JavaScript">
+  function checkSubmit(form){
+  	if(form.selfile.value.length==0)
+  	{
+  		alert("请选择要上传的文件");
+  	}
+  }
+</script>
+
+<div data-role="page" id="page1">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="/configPrj" data-icon="gear" data-iconpos="right"
+        class="ui-btn-right">
+            设置
+        </a>
+        <a data-role="button" href="/" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            返回
+        </a>
+        <h3>
+            项目-<%= prj.name %>
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="collapsible-set">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>
+                    上传
+                </h3>
+                <form action="" method="POST" data-ajax="false">
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup">
+                            <label for="textinput1">
+                                选择文件
+                            </label>
+                            <input name="selfile" id="textinput1" placeholder="" value="" type="file">
+                        </fieldset>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="selectmenu1">
+                            选择iOS AppID
+                        </label>
+                        <select name="">
+							<%- partial('appid', prj.appleAppIDs) %>
+                        </select>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup">
+                            <label for="textinput2">
+                                文件重命名为（可不填）
+                            </label>
+                            <input name="fileNewName" id="textinput2" placeholder="" value="" type="text">
+                        </fieldset>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup">
+                            <label for="textinput3">
+                                说明
+                            </label>
+                            <textarea name="comment" id="textinput3" placeholder="" value=""></textarea>
+                        </fieldset>
+                    </div>
+					<input value="全部清除" type="reset" data-inline="true">
+					<input data-theme="b" data-icon="star" data-iconpos="right" value="上传" type="submit" onClick="checkSubmit(this.form)">
+                </form>
+            </div>
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>
+                    下载
+                </h3>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="searchinput1">
+                        </label>
+                        <input name="" id="searchinput1" placeholder="" value="" type="search">
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

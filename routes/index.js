@@ -49,6 +49,9 @@ exports.doNewPrj = function(req, res){
   Project.get(prjname, function(err, prj){
   	if(prj)
   		err = '项目已存在';
+	else if(prjname.length==0)
+	    err = '项目名称不能为空';
+		
   	if(err){
   		req.flash('error',err);
   		return res.redirect('/newPrj');
@@ -60,7 +63,7 @@ exports.doNewPrj = function(req, res){
 	appids = appids.filter(function(x) {return x.length>0;});
 	
   	var newPrj = new Project({
-  		name: req.body.prjname,
+  		name: prjname,
   		appleAppIDs: appids
   	});
   	newPrj.save(function(err){
