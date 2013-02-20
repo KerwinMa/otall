@@ -33,7 +33,10 @@ app.configure(function(){
   app.use(flash());
   app.use(express.favicon());
   app.use(express.logger('dev'));
-  app.use(express.bodyParser({uploadDir:'./uploads'}));
+  app.use(express.bodyParser({
+	  uploadDir:'./public/uploads',
+ 	  limit: '1gb'
+  }));
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({
