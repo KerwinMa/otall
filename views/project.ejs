@@ -3,7 +3,9 @@
   	if(form.selfile.value.length==0)
   	{
   		alert("请选择要上传的文件");
+		return false;
   	}
+	return true;
   }
 </script>
 
@@ -27,7 +29,7 @@
                 <h3>
                     上传
                 </h3>
-                <form action="" method="POST" data-ajax="false">
+                <form action="" method="POST" enctype="multipart/form-data" action="/file-upload" data-ajax="false">
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup">
                             <label for="textinput1">
@@ -37,12 +39,18 @@
                         </fieldset>
                     </div>
                     <div data-role="fieldcontain">
-                        <label for="selectmenu1">
-                            选择iOS AppID
-                        </label>
-                        <select name="">
-							<%- partial('appid', prj.appleAppIDs) %>
-                        </select>
+						
+	                        <label for="selectmenu1">
+	                            选择iOS AppID
+	                        </label>
+							<br>
+	                        <select name="" id="selectmenu1">
+								<%- partial('appid', prj.appleAppIDs) %>
+								<option value="" >
+								    无
+								</option>
+	                        </select>
+						
                     </div>
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup">
@@ -55,13 +63,13 @@
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup">
                             <label for="textinput3">
-                                说明
+                                备注
                             </label>
                             <textarea name="comment" id="textinput3" placeholder="" value=""></textarea>
                         </fieldset>
                     </div>
 					<input value="全部清除" type="reset" data-inline="true">
-					<input data-theme="b" data-icon="star" data-iconpos="right" value="上传" type="submit" onClick="checkSubmit(this.form)">
+					<input data-theme="b" data-icon="star" data-iconpos="right" value="上传" type="submit" onClick="return checkSubmit(this.form)">
                 </form>
             </div>
             <div data-role="collapsible" data-collapsed="false">

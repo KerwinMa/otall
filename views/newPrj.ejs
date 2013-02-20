@@ -3,7 +3,9 @@
   	if(form.prjname.value.length==0)
   	{
   		alert("请输入项目名称!");
+		return false;
   	}
+	return true;
   }
 </script>
 <div data-role="page" id="page1">
@@ -34,7 +36,7 @@
                     <textarea name="appleAppIDs" id="appleAppIDs" placeholder=""></textarea>
                 </fieldset>
             </div>
-			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit" onClick="checkSubmit(this.form)">
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit" onClick="return checkSubmit(this.form)">
         </form>
     </div>
     <% if (success) { %>

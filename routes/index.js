@@ -78,9 +78,35 @@ exports.doNewPrj = function(req, res){
 };
 
 exports.upload = function(req, res){
-	res.render('upload', {
-		title:'上传',
-		success : req.flash('success').toString(),
-		error : req.flash('error').toString()
+	var fs = require('fs');
+	var path = require('path');
+	
+	var prjname = req.params.project;
+	var prjpath = path.join("uploads/",prjname);
+	fs.exists(prjpath, function (exists) {
+		if(!exists){
+			fs.mkdir(prjpath);
+		}
 	});
+	
+	var file_new_name = req.body.fileNewName.replace(/(^\s*)|(\s*$)/g, "");
+	var file_comment = req.body.comment.replace(/(^\s*)|(\s*$)/g, "");
+	
+	console.log(file_new_name);
+	console.log(file_comment);
+	var file_path = req.files.selfile.path;
+	var file_name = req.files.selfile.name;
+	var file_new_path;
+	if(file_new_name.length>0)
+		file_new_path = path.join(prjpath, file_new_name);
+	else
+		file_new_path = path.join(prjpath, file_name);
+	fs.rename(file_path, file_new_path,  function(err) {
+       if(err){
+         fs.unlink(file_new_path);
+         fs.rename(file_path, file_new_path);
+       }
+     });
+	 
+	res.redirect('/');
 };

@@ -26,14 +26,14 @@ var sessionStore = new MongoStore(
 var app = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3333);
+  app.set('port', process.env.PORT || 2000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());
   app.use(flash());
   app.use(express.favicon());
   app.use(express.logger('dev'));
-  app.use(express.bodyParser());
+  app.use(express.bodyParser({uploadDir:'./uploads'}));
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({
@@ -56,7 +56,6 @@ app.get('/newPrj', routes.newPrj);
 app.post('/newPrj', routes.doNewPrj);
 app.get('/p/:project', routes.project);
 app.post('/p/:project', routes.upload);
-app.get('/upload', routes.upload);
 
 
 http.createServer(app).listen(app.get('port'), function(){
