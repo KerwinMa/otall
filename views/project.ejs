@@ -84,13 +84,18 @@
             <div data-role="collapsible" data-collapsed="false">
                 <h3>
                     下载
-                </h3>
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="searchinput1">
-                        </label>
-                        <input name="" id="searchinput1" placeholder="" value="" type="search">
-                    </fieldset>
+                </h3>                
+                <div data-role="collapsible-set">
+				<% prj.groups.forEach(function(itemgroup, index) { %>
+					<div data-role="collapsible" data-collapsed="false">
+					    <h3>
+					        <%= itemgroup %>
+					    </h3>
+						<ul data-role="listview" data-divider-theme="b" data-inset="true">
+					        <%- partial('item', items) %>
+					    </ul>
+					</div>
+				<% }) %>
                 </div>
             </div>
         </div>

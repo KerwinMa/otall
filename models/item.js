@@ -13,9 +13,19 @@ function Item(prjname, filePath, plistPath, group, comment, time)
 	else{
 		this.time = new Date();
 	}
+	this.url = "";
 };
 
 module.exports = Item;
+
+Item.prototype.makeURL = function makeURL(){
+	if(this.group=='iOS')
+	{
+		
+	}
+	
+	this.url = this.filePath;
+};
 
 Item.prototype.save = function save(callback){
 	var item = {
@@ -44,8 +54,43 @@ Item.prototype.save = function save(callback){
 			});
 		});
 	});
-}
+};
 
 Item.get = function get(prjname, callback){
-	
-}
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		
+		db.collection('items', function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			
+			var query = {};
+			query.project = prjname;
+			
+			collection.find(query).sort({time:-1}).toArray(function(err,docs){
+				mongodb.close();
+				if(err){
+					callback(err,null);
+				}
+				
+				var items = [];
+				docs.forEach(function(doc,index){
+					var item = new Item(
+						doc.project, 
+						doc.filePath, 
+						doc.plistPath, 
+						doc.group, 
+						doc.comment,
+						doc.time);
+					items.push(item);
+				});
+				
+				callback(null, items);
+			});
+		});
+	});
+};

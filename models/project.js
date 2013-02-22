@@ -39,14 +39,6 @@ Project.prototype.save = function save(callback) {
 	});
 };
 
-Project.prototype.addFile = function addFile(file, callback){
-	
-};
-
-Project.prototype.getFile = function getFile(group, callback){
-
-};
-
 //
 Project.get = function get(projectName, callback) {
 	mongodb.open(function(err, db) {

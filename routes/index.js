@@ -28,11 +28,18 @@ exports.project = function(req, res){
 			req.flash('error', '项目不存在');
 			return res.redirect('/');
 		}
-		res.render('project', { 
-			title:prj.name, 
-			prj:prj,
-			success : req.flash('success').toString(),
-			error : req.flash('error').toString()
+		Item.get(prj.name, function(err,items){
+			if(err){
+				req.flash('error', err);
+				return res.redirect('/');
+			}
+			res.render('project', { 
+				title:prj.name, 
+				prj:prj,
+				items:items,
+				success : req.flash('success').toString(),
+				error : req.flash('error').toString()
+			});
 		});
 	});
 };
