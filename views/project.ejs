@@ -39,12 +39,11 @@
                         </fieldset>
                     </div>
                     <div data-role="fieldcontain">
-						
 	                        <label for="selectmenu1">
 	                            选择iOS AppID
 	                        </label>
 							<br>
-	                        <select name="" id="selectmenu1">
+	                        <select name="appid" id="selectmenu1">
 								<%- partial('appid', prj.appleAppIDs) %>
 								<option value="" >
 								    无
@@ -55,9 +54,20 @@
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup">
                             <label for="textinput2">
-                                文件重命名为（可不填）
+                                文件重命名为
                             </label>
-                            <input name="fileNewName" id="textinput2" placeholder="" value="" type="text">
+                            <input name="fileNewName" id="textinput2" placeholder="不填则使用原文件名" value="" type="text">
+                        </fieldset>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup">
+                            <label>
+                                选择分组
+                            </label>
+	                        <select name="group" id="selectmenu2">
+								<%- partial('filegroup', prj.groups) %>
+	                        </select>
+                            
                         </fieldset>
                     </div>
                     <div data-role="fieldcontain">
@@ -68,7 +78,6 @@
                             <textarea name="comment" id="textinput3" placeholder="" value=""></textarea>
                         </fieldset>
                     </div>
-					<input value="全部清除" type="reset" data-inline="true">
 					<input data-theme="b" data-icon="star" data-iconpos="right" value="上传" type="submit" onClick="return checkSubmit(this.form)">
                 </form>
             </div>

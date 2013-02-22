@@ -1,8 +1,9 @@
 var mongodb = require('./db');
 
-function Project(prj) {
-	this.name = prj.name;
-	this.appleAppIDs = prj.appleAppIDs;
+function Project(doc) {
+	this.name = doc.name;
+	this.appleAppIDs = doc.appleAppIDs;
+	this.groups = doc.groups;
 };
 
 module.exports = Project;
@@ -11,6 +12,7 @@ Project.prototype.save = function save(callback) {
 	var prj = {
 		name: this.name,
 		appleAppIDs: this.appleAppIDs,
+		groups: this.groups,
 	};
 	
 	mongodb.open(function(err, db) {
@@ -35,6 +37,14 @@ Project.prototype.save = function save(callback) {
 			});
 		});
 	});
+};
+
+Project.prototype.addFile = function addFile(file, callback){
+	
+};
+
+Project.prototype.getFile = function getFile(group, callback){
+
 };
 
 //

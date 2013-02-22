@@ -31,9 +31,17 @@
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup">
                     <label for="appleAppIDs">
-                        iOS AppID(多个ID用","分隔）
+                        iOS AppID
                     </label>
-                    <textarea name="appleAppIDs" id="appleAppIDs" placeholder=""></textarea>
+                    <textarea name="appleAppIDs" id="appleAppIDs" placeholder="零或多个，用空格或换行分开"></textarea>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="groups">
+                        分组（可添加，用空格或换行分开）
+                    </label>
+                    <textarea name="groups" id="groups" placeholder="一或多个，用空格或换行分开">iOS Android 其他</textarea>
                 </fieldset>
             </div>
 			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit" onClick="return checkSubmit(this.form)">
