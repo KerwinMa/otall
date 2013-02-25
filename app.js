@@ -54,11 +54,13 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+
 app.get('/', routes.index);
 app.get('/newPrj', routes.newPrj);
 app.post('/newPrj', routes.doNewPrj);
 app.get('/p/:project', routes.project);
 app.post('/p/:project', routes.upload);
+
 
 
 http.createServer(app).listen(app.get('port'), function(){

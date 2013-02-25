@@ -13,18 +13,23 @@ function Item(prjname, filePath, plistPath, group, comment, time)
 	else{
 		this.time = new Date();
 	}
-	this.url = "";
+	this.url = this.makeURL();
 };
 
 module.exports = Item;
 
 Item.prototype.makeURL = function makeURL(){
+	var url = this.filePath;
+	
 	if(this.group=='iOS')
 	{
-		
+		url = this.plistPath;
 	}
 	
-	this.url = this.filePath;
+	url =  url.replace('public/','');
+	url = '../'+url;
+	
+	return url;
 };
 
 Item.prototype.save = function save(callback){
