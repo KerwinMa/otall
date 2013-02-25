@@ -11,7 +11,14 @@ function Item(prjname, filePath, plistPath, group, comment, time)
 		this.time = time;
 	}
 	else{
-		this.time = new Date();
+		var now = new Date();
+		var timestr = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+' '+now.getHours()+':';
+		var minu = now.getMinutes();
+		if(minu<10)
+			timestr += '0';
+		timestr += minu;
+			
+		this.time = timestr;
 	}
 	this.url = this.makeURL();
 };
@@ -61,7 +68,7 @@ Item.prototype.save = function save(callback){
 	});
 };
 
-Item.get = function get(prjname, callback){
+Item.get = function get(prjname, group, callback){
 	mongodb.open(function(err,db){
 		if(err){
 			return callback(err);
@@ -75,6 +82,9 @@ Item.get = function get(prjname, callback){
 			
 			var query = {};
 			query.project = prjname;
+			if(group){
+				query.group = group;
+			}
 			
 			collection.find(query).sort({time:-1}).toArray(function(err,docs){
 				mongodb.close();

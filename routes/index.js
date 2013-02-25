@@ -28,7 +28,15 @@ exports.project = function(req, res){
 			req.flash('error', '项目不存在');
 			return res.redirect('/');
 		}
-		Item.get(prj.name, function(err,items){
+		
+		var groupName = req.body.group;
+		var group = null;
+		if(groupName!=""){
+			group = groupName;
+		}
+		console.log('group='+group);
+		
+		Item.get(prj.name, group, function(err,items){
 			if(err){
 				req.flash('error', err);
 				return res.redirect('/');
@@ -37,6 +45,7 @@ exports.project = function(req, res){
 				title:prj.name, 
 				prj:prj,
 				items:items,
+				activeGroup: groupName,
 				success : req.flash('success').toString(),
 				error : req.flash('error').toString()
 			});
@@ -100,6 +109,22 @@ exports.doNewPrj = function(req, res){
 };
 
 exports.upload = function(req, res){
+	Project.get(req.params.project, function(err, prj){
+		if(!prj){
+			req.flash('error', '项目不存在');
+			return res.redirect('/');
+		}
+		
+		res.render('upload', { 
+			title:prj.name, 
+			prj:prj,
+			success : req.flash('success').toString(),
+			error : req.flash('error').toString()
+		});
+	});
+};
+
+exports.doUpload = function(req, res){
 	var fs = require('fs');
 	var path = require('path');
 	

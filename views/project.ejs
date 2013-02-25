@@ -20,84 +20,51 @@
             返回
         </a>
         <h3>
-            项目-<%= prj.name %>
+            项目 - <%= prj.name %> - 下载
         </h3>
     </div>
     <div data-role="content">
-        <div data-role="collapsible-set">
-            <div data-role="collapsible" data-collapsed="false">
-                <h3>
-                    上传
-                </h3>
-                <form action="" method="POST" enctype="multipart/form-data" data-ajax="false">
-                    <div data-role="fieldcontain">
-                        <fieldset data-role="controlgroup">
-                            <label for="textinput1">
-                                选择文件
-                            </label>
-                            <input name="selfile" id="textinput1" placeholder="" value="" type="file">
-                        </fieldset>
-                    </div>
-                    <div data-role="fieldcontain">
-	                        <label for="selectmenu1">
-	                            选择iOS AppID
-	                        </label>
-							<br>
-	                        <select name="appid" id="selectmenu1">
-								<%- partial('appid', prj.appleAppIDs) %>
-								<option value="" >
-								    无
-								</option>
-	                        </select>
-						
-                    </div>
-                    <div data-role="fieldcontain">
-                        <fieldset data-role="controlgroup">
-                            <label for="textinput2">
-                                文件重命名为
-                            </label>
-                            <input name="fileNewName" id="textinput2" placeholder="不填则使用原文件名" value="" type="text">
-                        </fieldset>
-                    </div>
-                    <div data-role="fieldcontain">
-                        <fieldset data-role="controlgroup">
-                            <label>
-                                选择分组
-                            </label>
-	                        <select name="group" id="selectmenu2">
-								<%- partial('filegroup', prj.groups) %>
-	                        </select>
-                            
-                        </fieldset>
-                    </div>
-                    <div data-role="fieldcontain">
-                        <fieldset data-role="controlgroup">
-                            <label for="textinput3">
-                                备注
-                            </label>
-                            <textarea name="comment" id="textinput3" placeholder="" value=""></textarea>
-                        </fieldset>
-                    </div>
-					<input data-theme="b" data-icon="star" data-iconpos="right" value="上传" type="submit" onClick="return checkSubmit(this.form)">
-                </form>
-            </div>
-            <div data-role="collapsible" data-collapsed="false">
-                <h3>
-                    下载
-                </h3>                
-                <div data-role="collapsible-set">
-				<% prj.groups.forEach(function(itemgroup, index) { %>
-					<div data-role="collapsible" data-collapsed="false">
-					    <h3>
-					        <%= itemgroup %>
-					    </h3>
-						<ul data-role="listview" data-divider-theme="b" data-inset="true">
-					        <%- partial('item', items) %>
-					    </ul>
-					</div>
-				<% }) %>
-                </div>
-            </div>
+		<div data-role="navbar" data-iconpos="left">
+            <ul>
+                <li>
+                    <a href="/p/<%= prj.name %>" data-transition="none" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">下载</a>
+                </li>
+                <li>
+                    <a href="/up/<%= prj.name %>" data-transition="none" data-theme="" data-icon="">上传</a>
+                </li>
+            </ul>
         </div>
+        <form action="" data-ajax="false" method="post">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                    <legend>
+                        选择分类
+                    </legend>
+					<input id="radio_all" name="group" value="" type="radio" 
+					<% if(activeGroup=='' || activeGroup==null){ %>
+					checked
+					<% } %>
+					>
+                    <label for="radio_all">
+                        全部
+                    </label>
+					<% prj.groups.forEach(function(itemgroup, index) { %>
+                    <input id="radio_<%= itemgroup %>" name="group" value="<%= itemgroup %>" type="radio"
+					<% if(activeGroup==itemgroup){ %>
+					checked
+					<% } %>
+					>
+                    <label for="radio_<%= itemgroup %>">
+                        <%= itemgroup %>
+                    </label>
+					<% }) %>
+                </fieldset>
+            </div>
+            <input data-theme="d" data-icon="search" data-iconpos="right" value="查找"
+            type="submit">
+        </form>
+		<ul data-role="listview" data-divider-theme="b" data-inset="true">
+		    <%- partial('item', items) %>
+        </ul>
     </div>
 </div>

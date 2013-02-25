@@ -59,8 +59,9 @@ app.get('/', routes.index);
 app.get('/newPrj', routes.newPrj);
 app.post('/newPrj', routes.doNewPrj);
 app.get('/p/:project', routes.project);
-app.post('/p/:project', routes.upload);
-
+app.post('/p/:project', routes.project);
+app.get('/up/:project', routes.upload);
+app.post('/up/:project', routes.doUpload)
 
 
 http.createServer(app).listen(app.get('port'), function(){

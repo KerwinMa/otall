@@ -1,6 +1,8 @@
 <li data-theme="c">
     <a href="<%= item.url %>" data-ajax="false" data-transition="slide">
-        <%= item.url %><br>
+		<% var fname = item.filePath.split('/').reverse()[0]%>
+        <%= fname %><br>
+		<%= item.group %><br>
 		<%= item.comment %><br>
 		<%= item.time %>
     </a>
