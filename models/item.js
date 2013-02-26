@@ -6,8 +6,16 @@ function Item(prjname, filePath, plistPath, group, comment, time, url)
 	this.project = prjname;//所属项目名称
 	this.filePath = filePath;
 	this.plistPath = plistPath;//for iOS
-	this.group = group;//所属分组
+	
+	if(group){
+		this.group = group;//所属分组
+	}
+	else{
+		this.group='';
+	}
+	
 	this.comment = comment;
+	
 	if(time){
 		this.time = time;
 	}

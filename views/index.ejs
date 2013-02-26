@@ -2,7 +2,7 @@
 <div data-role="page" id="page1">
     <div data-theme="b" data-role="header">
         <h3>
-            OTA Server (<%= version %>)
+            OTA Server
         </h3>
     </div>
     <div data-role="content">
@@ -30,6 +30,11 @@
                 </a>
             </li>
 			<%- partial('prj', prjs) %>
+        </ul>
+		<ul data-role="listview" data-divider-theme="c" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                版本：<%= version %>
+            </li>
         </ul>
     </div>
 </div>

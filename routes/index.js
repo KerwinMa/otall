@@ -152,35 +152,44 @@ exports.doUpload = function(req, res){
 	}
 		
 	fs.rename(file_path, file_new_path,  function(err) {
-       if(err){
-         fs.unlink(file_new_path);
-         fs.rename(file_path, file_new_path);
-       }
-	   console.log("save file to "+file_new_path);
-     });
+		if(err){
+			fs.unlink(file_new_path);
+         	fs.rename(file_path, file_new_path);
+       	}
+	   
+	  	console.log("save file to "+file_new_path);
+	   
+	  	 var group = req.body.group;
+	  	 if(group==null)
+	  		 group = '';
+	 
+	  	 if(req.body.appid==null && group.toLowerCase()=='ios'){
+	  		 req.flash('error','错误：iOS必须选择App ID');
+	  		 res.redirect('/up/'+prjname);
+	  		 return;
+	  	 }
 	 	 
-	 var item = new Item(prjname, file_new_path, "", req.body.group, file_comment, null, '');
+	  	 var item = new Item(prjname, file_new_path, "", req.body.group, file_comment, null, '');
 	 
-	 var host = req.host + ':' + settings.appport;
+	  	 var host = req.host + ':' + settings.appport;
 	 
-	 item.makePlist(host, req.body.appid, function(err){
-		 if(err){
-			 console.log('make plist error:'+err);
-			 req.flash('error',err);
-			 res.redirect('/up/'+prjname);
-		 }
-		 else{
-			 item.save(function(err){
-				 if(err){
-					 req.flash('error',err);
-				 }
-				 else{
-					 req.flash('success','上传成功！');
-				 }
-				 res.redirect('/p/'+prjname);
-			 });
-		 }
-	 });
-	 
-	 
+	  	 item.makePlist(host, req.body.appid, function(err){
+	  		 if(err){
+	  			 console.log('make plist error:'+err);
+	  			 req.flash('error',err);
+	  			 res.redirect('/up/'+prjname);
+	  		 }
+	  		 else{
+	  			 item.save(function(err){
+	  				 if(err){
+	  					 req.flash('error',err);
+	  				 }
+	  				 else{
+	  					 req.flash('success','上传成功！');
+	  				 }
+	  				 res.redirect('/p/'+prjname);
+	  			 });
+	  		 }
+	  	 });
+     });//rename
 };

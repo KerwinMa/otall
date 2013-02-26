@@ -65,6 +65,7 @@
                     <input name="fileNewName" id="textinput2" placeholder="不填则使用原文件名" value="" type="text">
                 </fieldset>
             </div>
+			<% if(prj.appleAppIDs.length>0){ %>
 			<div data-role="fieldcontain">
 	            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 	                <legend>
@@ -73,6 +74,7 @@
 					<%- partial('appid', prj.appleAppIDs) %>
 	            </fieldset>
 			</div>
+			<% } %>
             <div data-role="fieldcontain">
 	            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 	                <legend>
