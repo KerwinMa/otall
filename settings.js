@@ -2,6 +2,7 @@ module.exports = {
 	cookie_secret : 'secret_happyfire',
 	db : 'otall',
 	host : 'localhost',
-	port : 27017,
+	dbport : 27017,
+	appport : 2000,
 	version : '1.0beta'
 }

@@ -6,6 +6,20 @@
         </h3>
     </div>
     <div data-role="content">
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
         <ul data-role="listview" data-divider-theme="b" data-inset="true">
             <li data-role="list-divider" role="heading">
                 选择项目

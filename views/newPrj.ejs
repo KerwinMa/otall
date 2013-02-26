@@ -19,6 +19,20 @@
         </h3>
     </div>
     <div data-role="content">
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
         <form method="POST" data-ajax="false">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup">
@@ -39,22 +53,12 @@
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup">
                     <label for="groups">
-                        分组（可添加，用空格或换行分开）
+                        分组(用空格或换行分开)
                     </label>
-                    <textarea name="groups" id="groups" placeholder="一或多个，用空格或换行分开">iOS Android</textarea>
+                    <textarea name="groups" id="groups" placeholder="零或多个，用空格或换行分开">iOS Android</textarea>
                 </fieldset>
             </div>
 			<input data-theme="b" data-icon="star" data-iconpos="right" value="创建" type="submit" onClick="return checkSubmit(this.form)">
         </form>
     </div>
-    <% if (success) { %>
-		<div data-role="content" id="success">
-			<p><%= success %><p>
-		</div>
-    <% } %>
-    <% if (error) { %>
-		<div data-role="content" id="error">
-			<p><%= error %><p>
-		</div>
-    <% } %>
 </div>

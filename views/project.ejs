@@ -34,6 +34,20 @@
                 </li>
             </ul>
         </div>
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
         <form action="" data-ajax="false" method="post">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">

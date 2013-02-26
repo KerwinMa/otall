@@ -34,7 +34,6 @@ exports.project = function(req, res){
 		if(groupName!=""){
 			group = groupName;
 		}
-		console.log('group='+group);
 		
 		Item.get(prj.name, group, function(err,items){
 			if(err){
@@ -85,11 +84,8 @@ exports.doNewPrj = function(req, res){
 	groups = groups.map(function(x) { return x.replace(/(^\s*)|(\s*$)/g, "");});
 	groups = groups.filter(function(x) {return x.length>0;});
 	
-	if(groups.length==0)
-	{
-		err = "错误：至少需要一个分组";
-		req.flash('error',err);
-		return res.redirect('/newPrj');
+	if(groups.length==0){
+		groups = ['Default'];
 	}
 	
   	var newPrj = new Project({
@@ -130,11 +126,9 @@ exports.doUpload = function(req, res){
 	
 	var prjname = req.params.project;
 	var prjpath = path.join("./public/uploads/",prjname);
-	fs.exists(prjpath, function (exists) {
-		if(!exists){
-			fs.mkdir(prjpath);
-		}
-	});
+	if(!fs.existsSync(prjpath)){
+		fs.mkdir(prjpath);
+	}
 		
 	var file_new_name = req.body.fileNewName.replace(/(^\s*)|(\s*$)/g, "");
 	var file_comment = req.body.comment.replace(/(^\s*)|(\s*$)/g, "");
@@ -147,6 +141,16 @@ exports.doUpload = function(req, res){
 	else
 		file_new_path = path.join(prjpath, file_name);
 		
+	if(fs.existsSync(file_new_path)){
+		if(file_new_path!=file_path){
+			fs.unlink(file_path);
+			console.log('del '+file_path);
+		}
+		req.flash('error','错误：'+file_new_path.replace('public/uploads/','')+'已存在!');
+		res.redirect('/up/'+prjname);
+	 	return;
+	}
+		
 	fs.rename(file_path, file_new_path,  function(err) {
        if(err){
          fs.unlink(file_new_path);
@@ -154,17 +158,29 @@ exports.doUpload = function(req, res){
        }
 	   console.log("save file to "+file_new_path);
      });
+	 	 
+	 var item = new Item(prjname, file_new_path, "", req.body.group, file_comment, null, '');
 	 
-	 var plist_path = "";
+	 var host = req.host + ':' + settings.appport;
 	 
-	 var item = new Item(prjname, file_new_path, plist_path, req.body.group, file_comment);
-	 item.save(function(err){
+	 item.makePlist(host, req.body.appid, function(err){
 		 if(err){
+			 console.log('make plist error:'+err);
 			 req.flash('error',err);
+			 res.redirect('/up/'+prjname);
 		 }
 		 else{
-			 req.flash('success','上传成功！');
+			 item.save(function(err){
+				 if(err){
+					 req.flash('error',err);
+				 }
+				 else{
+					 req.flash('success','上传成功！');
+				 }
+				 res.redirect('/p/'+prjname);
+			 });
 		 }
-		 res.redirect('/p/'+prjname);
 	 });
+	 
+	 
 };
