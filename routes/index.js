@@ -193,3 +193,60 @@ exports.doUpload = function(req, res){
 	  	 });
      });//rename
 };
+
+exports.configPrj = function(req, res){
+	Project.get(req.params.project, function(err, prj){
+		if(!prj){
+			req.flash('error', '项目不存在');
+			return res.redirect('/');
+		}
+
+		res.render('configPrj', { 
+			title:prj.name, 
+			prj:prj,
+			success : req.flash('success').toString(),
+			error : req.flash('error').toString()
+		});
+	});
+};
+
+exports.doConfigPrj = function(req, res){
+  var prjname = req.params.project;
+  //检查项目是否已经存在
+  Project.get(prjname, function(err, prj){
+  	if(!prj)
+  		err = '项目不存在';
+		
+  	if(err){
+  		req.flash('error',err);
+  		return res.redirect('/');
+  	}
+
+	var appids = req.body.appleAppIDs.split(/\r?\n?\s/);
+	appids = appids.map(function(x) { return x.replace(/(^\s*)|(\s*$)/g, "");});
+	appids = appids.filter(function(x) {return x.length>0;});
+	
+	var groups = req.body.groups.split(/\r?\n?\s/);
+	groups = groups.map(function(x) { return x.replace(/(^\s*)|(\s*$)/g, "");});
+	groups = groups.filter(function(x) {return x.length>0;});
+	
+	if(groups.length==0){
+		groups = ['Default'];
+	}
+	
+  	var newPrj = new Project({
+  		name: prjname,
+  		appleAppIDs: appids,
+		groups: groups
+  	});
+	
+  	prj.update(newPrj, function(err){
+  		if(err){
+  			req.flash('error',err);
+  			return res.redirect('/p/'+prjname);
+  		}
+  		req.flash('success','项目更新成功');
+  		res.redirect('/p/'+prjname);
+  	});
+  });
+};

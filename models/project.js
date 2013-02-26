@@ -39,6 +39,28 @@ Project.prototype.save = function save(callback) {
 	});
 };
 
+Project.prototype.update = function update(prj, callback) {	
+	mongodb.open(function(err, db) {
+		if (err) {
+		  return callback(err);
+		}
+
+		//获取prjects集合
+		db.collection('projects', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err);
+			}
+
+			//update
+			collection.update({name:prj.name}, {$set:{"appleAppIDs":prj.appleAppIDs, "groups":prj.groups}}, function(err) {
+				mongodb.close();
+				callback(err);
+			});
+		});
+	});
+};
+
 //
 Project.get = function get(projectName, callback) {
 	mongodb.open(function(err, db) {

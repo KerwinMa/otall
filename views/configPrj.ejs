@@ -1,0 +1,48 @@
+<div data-role="page" id="page1">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="/p/<%=prj.name%>" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            返回
+        </a>
+        <h3>
+            修改项目设置 - <%= prj.name %>
+        </h3>
+    </div>
+    <div data-role="content">
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
+        <form method="POST" data-ajax="false">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="appleAppIDs">
+                        iOS AppID
+                    </label>
+					<% var appids = prj.appleAppIDs.toString().replace(/\,/g,'\n');  %>
+                    <textarea name="appleAppIDs" id="appleAppIDs" placeholder="零或多个，用空格或换行分开"><%= appids %></textarea>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="groups">
+                        分组(用空格或换行分开)
+                    </label>
+					<% var groups = prj.groups.toString().replace(/\,/g,'\n');  %>
+                    <textarea name="groups" id="groups" placeholder="零或多个，用空格或换行分开"><%= groups%></textarea>
+                </fieldset>
+            </div>
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="更新" type="submit" onClick="return checkSubmit(this.form)">
+        </form>
+    </div>
+</div>
