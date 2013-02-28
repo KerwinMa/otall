@@ -163,7 +163,10 @@ exports.doUpload = function(req, res){
 	  	 if(group==null)
 	  		 group = '';
 	 
-	  	 if(req.body.appid==null && group.toLowerCase()=='ios'){
+	  	 if(req.body.appid==null && Item.isIOS(group)){
+	 		 fs.unlink(file_new_path);
+	 		 console.log('del '+file_new_path);
+			 
 	  		 req.flash('error','错误：iOS必须选择App ID');
 	  		 res.redirect('/up/'+prjname);
 	  		 return;

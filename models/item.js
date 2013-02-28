@@ -40,7 +40,7 @@ module.exports = Item;
 Item.prototype.makeURL = function makeURL(){
 	var url = this.filePath;
 	
-	if(this.group.toLowerCase()=='ios')
+	if(Item.isIOS(this.group))
 	{
 		url = this.plistPath;
 	}
@@ -53,7 +53,7 @@ Item.prototype.makeURL = function makeURL(){
 
 //itms-services://?action=download-manifest&url=http://192.168.0.190:2000/uploads/test/test.plist
 Item.prototype.makePlistURL = function makePlistURL(host, plist_path){
-	if(this.group.toLowerCase()=='ios')
+	if(Item.isIOS(this.group))
 	{
 		var plist = plist_path.replace('public','');
 		this.url = 'itms-services://?action=download-manifest&url=http://' + path.join(host, plist);
@@ -62,7 +62,7 @@ Item.prototype.makePlistURL = function makePlistURL(host, plist_path){
 };
 
 Item.prototype.makeIPAURL = function makeIPAURL(host, ipa_path){
-	if(this.group.toLowerCase()=='ios')
+	if(Item.isIOS(this.group))
 	{
 		var ipa = ipa_path.replace('public','');
 		var ipa_url = 'http://' + path.join(host, ipa);
@@ -146,7 +146,7 @@ Item.get = function get(prjname, group, callback){
 };
 
 Item.prototype.makePlist = function makePlist(host, appid, callback){	
-	if(this.group.toLowerCase()!='ios'){
+	if(!Item.isIOS(this.group)){
 		callback(null);
 		return;
 	}
@@ -195,5 +195,8 @@ Item.prototype.makePlist = function makePlist(host, appid, callback){
 			callback(null);
 		});
 	});
+};
 
+Item.isIOS = function isIOS(group){
+	return group.toLowerCase().match('ios')!=null;
 };
