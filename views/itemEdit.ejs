@@ -1,0 +1,11 @@
+<li data-theme="c">
+    <a href="<%= itemEdit.url %>" data-ajax="false" data-transition="slide">
+		<% var fname = itemEdit.filePath.split('/').reverse()[0]%>
+		<% if(itemEdit.group!=''){ %>
+        [<%= itemEdit.group %>] 
+		<% }%>
+		<%= itemEdit.time %><br>
+		<%= fname %><br>
+		<%= itemEdit.comment %>
+    </a>
+</li>

@@ -64,6 +64,7 @@ app.get('/up/:project', routes.upload);
 app.post('/up/:project', routes.doUpload);
 app.get('/configPrj/:project', routes.configPrj);
 app.post('/configPrj/:project', routes.doConfigPrj);
+app.get('/del/:project/:filename', routes.deleteItem);
 
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -34,6 +34,13 @@ exports.project = function(req, res){
 		if(groupName!=""){
 			group = groupName;
 		}
+		var opmode = null;//req.body.opmode;
+		if(opmode==null){
+			opmode = req.query.opmode;
+			if(opmode==null)
+				opmode = 'download';
+		}
+		
 		
 		Item.get(prj.name, group, function(err,items){
 			if(err){
@@ -45,6 +52,7 @@ exports.project = function(req, res){
 				prj:prj,
 				items:items,
 				activeGroup: groupName,
+				opmode: opmode,
 				success : req.flash('success').toString(),
 				error : req.flash('error').toString()
 			});
@@ -252,4 +260,31 @@ exports.doConfigPrj = function(req, res){
   		res.redirect('/p/'+prjname);
   	});
   });
+};
+
+exports.deleteItem = function(req, res){
+	var fs = require('fs');
+	var path = require('path');
+	var prjname = req.params.project;
+	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	
+	console.log('try delete file: '+filepath+ ' of project '+prjname);
+	
+	Item.remove(prjname, filepath, function(err){
+		if(err){
+			req.flash('error',err);
+			console.log('delete err '+err);
+		}
+		else{
+			req.flash('success','删除成功!');
+			fs.unlink(filepath);
+			if(path.extname(filepath).toLowerCase()=='.ipa'){
+				var plistPath = filepath.replace('.ipa','.plist');
+				fs.unlink(plistPath);
+			}
+			console.log('delete ok!');
+		}
+		
+		return res.redirect('/p/'+prjname+'?opmode=delete');
+	});
 };

@@ -7,6 +7,11 @@
   	}
 	return true;
   }
+
+  function conformDel(){ 
+  	if(!confirm("是否要删除？")) 
+  		return false; 
+  } 
 </script>
 
 <div data-role="page" id="page1">
@@ -20,14 +25,24 @@
             返回
         </a>
         <h3>
-            项目 - <%= prj.name %> - 下载
+            项目 - <%= prj.name %>
         </h3>
     </div>
     <div data-role="content">
 		<div data-role="navbar" data-iconpos="left">
             <ul>
                 <li>
-                    <a href="/p/<%= prj.name %>" data-transition="none" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">下载</a>
+                    <a href="/p/<%= prj.name %>" data-transition="none" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">
+					<% if(opmode=='download'){ %>
+						下载
+					<% } %>
+					<% if(opmode=='delete'){ %>
+						删除
+					<% } %>
+					<% if(opmode=='edit'){ %>
+						编辑
+					<% } %>
+					</a>
                 </li>
                 <li>
                     <a href="/up/<%= prj.name %>" data-transition="none" data-theme="" data-icon="">上传</a>
@@ -48,6 +63,25 @@
             </li>
         </ul>
         <% } %>
+		<div data-role="fieldcontain">
+			<ul data-role="controlgroup" data-type="horizontal" class="localnav" data-mini="true">
+				<li><a href="" data-role="button" data-transition="none">
+					选择操作模式：
+				</a></li>
+				<li><a href="?opmode=download" data-role="button" data-transition="none" 
+					<% if(opmode=='download'){ %>
+					 class="ui-btn-active"
+					<% } %>
+					>下载
+				</a></li>
+				<li><a href="?opmode=delete" data-role="button" data-transition="none" 
+					<% if(opmode=='delete'){ %>
+					 class="ui-btn-active"
+					<% } %>
+					>删除
+				</a></li>
+			</ul>
+		</div>
         <form action="" data-ajax="false" method="post">
             <div data-role="fieldcontain">
                 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
@@ -78,7 +112,15 @@
             type="submit">
         </form>
 		<ul data-role="listview" data-divider-theme="b" data-inset="true">
+			<% if(opmode=='download'){ %>
 		    <%- partial('item', items) %>
+			<% } %>
+			<% if(opmode=='delete'){ %>
+			<%- partial('itemDel', items) %>
+			<% } %>
+			<% if(opmode=='edit'){ %>
+			<%- partial('itemEdit', items) %>
+			<% } %>
         </ul>
     </div>
 </div>

@@ -102,6 +102,24 @@ Item.prototype.save = function save(callback){
 	});
 };
 
+Item.remove = function remove(prjname, filepath, callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		
+		db.collection('items', function(err, collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			
+			collection.remove({project:prjname, filePath:filepath});
+			callback(null);
+		});
+	});
+};
+
 Item.get = function get(prjname, group, callback){
 	mongodb.open(function(err,db){
 		if(err){
