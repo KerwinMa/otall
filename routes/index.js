@@ -5,6 +5,8 @@
 var Project = require('../models/project.js');
 var Item = require('../models/item.js');
 var settings = require('../settings');
+var crypto = require('crypto');
+var User = require('../models/user.js');
 
 exports.index = function(req, res){
 	Project.getAll(function(err,prjs){
@@ -12,8 +14,14 @@ exports.index = function(req, res){
 			prjs = [];
 		}
 		
+		if(req.session.user==null){
+			res.redirect('/login');
+			return;
+		}
+		
 		res.render('index',{
 			title: '首页',
+			user: req.session.user,
 			prjs: prjs,
 			version: settings.version,
 			success : req.flash('success').toString(),
@@ -23,6 +31,11 @@ exports.index = function(req, res){
 };
 
 exports.project = function(req, res){
+	if(req.session.user==null){
+		res.redirect('/login');
+		return;
+	}
+	
 	Project.get(req.params.project, function(err, prj){
 		if(!prj){
 			req.flash('error', '项目不存在');
@@ -61,6 +74,11 @@ exports.project = function(req, res){
 };
 
 exports.newPrj = function(req, res){
+	if(req.session.user==null){
+		res.redirect('/login');
+		return;
+	}
+	
 	res.render('newPrj', { 
 		title:'新项目',
 		success : req.flash('success').toString(),
@@ -113,6 +131,11 @@ exports.doNewPrj = function(req, res){
 };
 
 exports.upload = function(req, res){
+	if(req.session.user==null){
+		res.redirect('/login');
+		return;
+	}
+	
 	Project.get(req.params.project, function(err, prj){
 		if(!prj){
 			req.flash('error', '项目不存在');
@@ -206,6 +229,11 @@ exports.doUpload = function(req, res){
 };
 
 exports.configPrj = function(req, res){
+	if(req.session.user==null){
+		res.redirect('/login');
+		return;
+	}
+	
 	Project.get(req.params.project, function(err, prj){
 		if(!prj){
 			req.flash('error', '项目不存在');
@@ -290,6 +318,11 @@ exports.deleteItem = function(req, res){
 };
 
 exports.editItem = function(req, res){
+	if(req.session.user==null){
+		res.redirect('/login');
+		return;
+	}
+	
 	var prjname = req.params.project;
 	var filename = req.params.filename;
 	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
@@ -339,5 +372,84 @@ exports.doEditItem = function(req,res){
 	    		res.redirect('/p/'+prjname+'?opmode=edit');
 	    	});
 		}
+	});
+};
+
+exports.login = function(req, res) {
+	res.render('login', {
+		title: '用户登录',
+		user : req.session.user,
+		success : req.flash('success').toString(),
+		error : req.flash('error').toString()
+    });
+};
+
+exports.doLogin = function(req, res){
+	
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.pwd).digest('base64'); 
+	
+	User.get(req.body.username, function(err, user) {
+		if (!user) {
+			req.flash('error', '用户不存在');
+			return res.redirect('/');
+		}
+		if (user.password != password) {
+			req.flash('error', '密码错误');
+			return res.redirect('/');
+		}
+		req.session.user = user;
+		req.flash('success', '登录成功');
+		res.redirect('/');
+	});
+};
+
+exports.logout = function(req, res) {
+	req.session.user = null;
+	res.redirect('/');
+};
+
+exports.reg = function(req, res) {
+	res.render('reg', {
+		title: '用户注册',
+		success : req.flash('success').toString(),
+		error : req.flash('error').toString()
+    });
+};
+
+exports.doReg = function(req, res) {
+	//检查密码
+    if (req.body['pwd2'] != req.body['pwd']) {
+		req.flash('error', '两次输入的密码不一致');
+		return res.redirect('/reg');
+    }
+  
+    //生成md5的密码
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.pwd).digest('base64');
+    
+    var newUser = new User({
+		name: req.body.username,
+		password: password,
+    });
+    
+    //检查用户名是否已经存在
+	User.get(newUser.name, function(err, user) {
+		if (user)
+			err = '用户已存在！';
+		if (err) {
+			req.flash('error', err);
+			return res.redirect('/reg');
+		}
+		//如果不存在則新增用戶
+		newUser.save(function(err) {
+			if (err) {
+				req.flash('error', err);
+				return res.redirect('/reg');
+			}
+			req.session.user = newUser;
+			req.flash('success', '注册成功');
+			res.redirect('/');
+		});
 	});
 };

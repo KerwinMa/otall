@@ -1,0 +1,47 @@
+<!-- Home -->
+<div data-role="page" id="page1">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="/reg" data-icon="add" data-iconpos="right"
+        class="ui-btn-right">
+		注册
+        </a>
+        <h3>
+            OTA Server - 登陆
+        </h3>
+    </div>
+    <div data-role="content">
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
+        <form method="POST" data-ajax="false">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="username">
+                        用户名
+                    </label>
+                    <input name="username" id="username" placeholder="" value="" type="text">
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="pwd">
+                        密码
+                    </label>
+                    <input name="pwd" id="pwd" placeholder="" value="" type="password">
+                </fieldset>
+            </div>
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="登陆" type="submit">
+        </form>	
+    </div>
+</div>

@@ -42,7 +42,8 @@ app.configure(function(){
   app.use(express.session({
 		secret : settings.cookie_secret,
 		cookie : {
-			maxAge : 60000 * 20	//20 minutes
+			//maxAge : 60000 * 20	//20 minutes
+			maxAge : 1000
 		},
 		store : sessionStore
 	}));
@@ -56,6 +57,11 @@ app.configure('development', function(){
 
 
 app.get('/', routes.index);
+app.get('/login', routes.login);
+app.post('/login', routes.doLogin);
+app.get('/logout', routes.logout);
+app.get('/reg', routes.reg);
+app.post('/reg', routes.doReg);
 app.get('/newPrj', routes.newPrj);
 app.post('/newPrj', routes.doNewPrj);
 app.get('/p/:project', routes.project);
