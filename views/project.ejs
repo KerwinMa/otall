@@ -80,6 +80,12 @@
 					<% } %>
 					>删除
 				</a></li>
+				<li><a href="?opmode=edit" data-role="button" data-transition="none" 
+					<% if(opmode=='edit'){ %>
+					 class="ui-btn-active"
+					<% } %>
+					>编辑
+				</a></li>
 			</ul>
 		</div>
         <form action="" data-ajax="false" method="post">

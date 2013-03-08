@@ -1,11 +1,13 @@
 <li data-theme="c">
-    <a href="<%= itemEdit.url %>" data-ajax="false" data-transition="slide">
-		<% var fname = itemEdit.filePath.split('/').reverse()[0]%>
-		<% if(itemEdit.group!=''){ %>
-        [<%= itemEdit.group %>] 
-		<% }%>
-		<%= itemEdit.time %><br>
-		<%= fname %><br>
-		<%= itemEdit.comment %>
+	<% var fname = itemEdit.filePath.split('/').reverse()[0]%>
+    <a href="/edit/<%=itemEdit.project%>/<%= fname %>" data-ajax="false" data-transition="slide">
+		<div class=fl_time>
+			<% if(itemEdit.group!=''){ %>
+	        [<%= itemEdit.group %>] 
+			<% }%>
+			<%= itemEdit.time %>
+		</div>
+		<div class=fl_edit>编辑: <%= fname %></div>
+		<div class=fl_comment><%= itemEdit.comment %></div>
     </a>
 </li>

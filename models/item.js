@@ -102,6 +102,28 @@ Item.prototype.save = function save(callback){
 	});
 };
 
+Item.prototype.update = function update(prjname, filepath, newGroup, newComment, callback) {	
+	mongodb.open(function(err, db) {
+		if (err) {
+		  return callback(err);
+		}
+		
+		db.collection('items', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err);
+			}
+
+			//update
+			collection.update({project:prjname, filePath:filepath},
+				 {$set:{"group":newGroup, "comment":newComment}}, function(err) {
+				mongodb.close();
+				callback(err);
+			});
+		});
+	});
+};
+
 Item.remove = function remove(prjname, filepath, callback){
 	mongodb.open(function(err,db){
 		if(err){
@@ -116,6 +138,39 @@ Item.remove = function remove(prjname, filepath, callback){
 			
 			collection.remove({project:prjname, filePath:filepath});
 			callback(null);
+		});
+	});
+};
+
+Item.getOne = function getOne(prjname, filepath, callback) {
+	mongodb.open(function(err, db) {
+		if (err) {
+			return callback(err);
+		}
+
+		db.collection('items', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err);
+			}
+			
+			//find
+			collection.findOne({project: prjname, filePath: filepath}, function(err, doc) {
+				mongodb.close();
+				if (doc) {
+					var item = new Item(
+						doc.project, 
+						doc.filePath, 
+						doc.plistPath, 
+						doc.group, 
+						doc.comment,
+						doc.time,
+						doc.url);
+					callback(err, item);
+				} else {
+					callback(err, null);
+				}
+			});
 		});
 	});
 };

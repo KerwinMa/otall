@@ -288,3 +288,56 @@ exports.deleteItem = function(req, res){
 		return res.redirect('/p/'+prjname+'?opmode=delete');
 	});
 };
+
+exports.editItem = function(req, res){
+	var prjname = req.params.project;
+	var filename = req.params.filename;
+	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	
+	Project.get(prjname, function(err, prj){
+		if(!prj){
+			req.flash('error', '项目不存在');
+			return res.redirect('/');
+		}
+		
+		Item.getOne(prjname, filepath, function(err,item){
+			if(err){
+				req.flash('error: can not find item',err);
+			}
+			else{
+				res.render('editItem', { 
+					title:"编辑 - "+filename, 
+					prj:prj,
+					item:item,
+					fname:filename,
+					success : req.flash('success').toString(),
+					error : req.flash('error').toString()
+				});
+			}
+		});
+	});	
+};
+
+exports.doEditItem = function(req,res){
+	var prjname = req.params.project;
+	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	var newGroup = req.body.group;
+	var newComment = req.body.comment;
+	
+	Item.getOne(prjname, filepath, function(err,item){
+		if(err){
+			req.flash('error: can not find item',err);
+		}
+		else{
+			
+	    	item.update(prjname, filepath, newGroup, newComment, function(err){
+	    		if(err){
+	    			req.flash('error',err);
+	    			return res.redirect('/p/'+prjname+'?opmode=edit');
+	    		}
+	    		req.flash('success','信息编辑成功');
+	    		res.redirect('/p/'+prjname+'?opmode=edit');
+	    	});
+		}
+	});
+};

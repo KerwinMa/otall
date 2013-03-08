@@ -1,12 +1,13 @@
 <li data-theme="c">
 	<% var fname = itemDel.filePath.split('/').reverse()[0]%>
     <a href="/del/<%=itemDel.project%>/<%= fname %>" onClick="return conformDel();" data-ajax="false" data-transition="slide">
-		<font color='red'>删除</font>
-		<% if(itemDel.group!=''){ %>
-        [<%= itemDel.group %>] 
-		<% }%>
-		<%= itemDel.time %><br>
-		<%= fname %><br>
-		<%= itemDel.comment %>
+		<div class=fl_time>
+			<% if(itemDel.group!=''){ %>
+	        [<%= itemDel.group %>] 
+			<% }%>
+			<%= itemDel.time %>
+		</div>
+		<div class=fl_del>删除: <%= fname %></div>
+		<div class=fl_comment><%= itemDel.comment %></div>
     </a>
 </li>

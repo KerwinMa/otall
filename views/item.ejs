@@ -1,11 +1,13 @@
 <li data-theme="c">
     <a href="<%= item.url %>" data-ajax="false" data-transition="slide">
-		<% var fname = item.filePath.split('/').reverse()[0]%>
-		<% if(item.group!=''){ %>
-        [<%= item.group %>] 
-		<% }%>
-		<%= item.time %><br>
-		<%= fname %><br>
-		<%= item.comment %>
+		<div class=fl_time>
+			<% var fname = item.filePath.split('/').reverse()[0]%>
+			<% if(item.group!=''){ %>
+	        [<%= item.group %>] 
+			<% }%>
+			<%= item.time %>
+		</div>
+		<div class=fl_name><%= fname %></div>
+		<div class=fl_comment><%= item.comment %></div>
     </a>
 </li>

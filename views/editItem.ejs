@@ -1,0 +1,82 @@
+<div data-role="page" id="page1">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="/p/<%=prj.name%>?opmode=edit" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            返回
+        </a>
+        <h3>
+            编辑 - <%= prj.name %>/<%= fname %>
+        </h3>
+    </div>
+    <div data-role="content">
+        <% if (success) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= success %>
+            </li>
+        </ul>
+        <% } %>
+        <% if (error) { %>
+		<ul data-role="listview" data-divider-theme="e" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                <%= error %>
+            </li>
+        </ul>
+        <% } %>
+        <form action="" method="POST" enctype="multipart/form-data" data-ajax="false">
+            <!-- <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="textinput2">
+                        文件重命名为
+                    </label>
+                    <input name="fileNewName" id="textinput2" placeholder="不填则不修改" value=<%=fname%> type="text">
+                </fieldset>
+            </div> -->
+			<% if(prj.appleAppIDs.length>0 && false){ %>
+			<div data-role="fieldcontain">
+	            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+	                <legend>
+	                    选择AppID(iOS)
+	                </legend>
+					<%- partial('appid', prj.appleAppIDs) %>
+	            </fieldset>
+			</div>
+			<% } %>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                    <legend>
+                        选择分组
+                    </legend>
+					<input id="radio_no" name="group" value="" type="radio" 
+					<% if(item.group=='' || item.group==null){ %>
+					checked
+					<% } %>
+					>
+                    <label for="radio_no">
+                        无分组
+                    </label>
+					<% prj.groups.forEach(function(itemgroup, index) { %>
+                    <input id="radio_<%= itemgroup %>" name="group" value="<%= itemgroup %>" type="radio"
+					<% if(item.group==itemgroup){ %>
+					checked
+					<% } %>
+					>
+                    <label for="radio_<%= itemgroup %>">
+                        <%= itemgroup %>
+                    </label>
+					<% }) %>
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="textinput3">
+                        备注
+                    </label>
+                    <textarea name="comment" id="textinput3" placeholder="" value=""><%= item.comment%></textarea>
+                </fieldset>
+            </div>
+			<input data-theme="b" data-icon="star" data-iconpos="right" value="提交" type="submit">
+        </form>
+    </div>
+</div>
+
