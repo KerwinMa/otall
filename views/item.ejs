@@ -1,7 +1,7 @@
 <li data-theme="c">
     <a href="<%= item.url %>" data-ajax="false" data-transition="slide">
 		<div class=fl_time>
-			<% var fname = item.filePath.split('/').reverse()[0]%>
+			<% var fname = item.getFilename() %>
 			<% if(item.group!=''){ %>
 	        [<%= item.group %>] 
 			<% }%>

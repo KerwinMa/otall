@@ -31,41 +31,55 @@ function Item(prjname, filePath, plistPath, group, comment, time, url)
 	}
 	this.url = url;
 	if(this.url==''){
-		this.url = this.makeURL();
+		this.url = this.makeURL(null);
 	}
 };
 
 module.exports = Item;
 
-Item.prototype.makeURL = function makeURL(){
-	var url = this.filePath;
+Item.prototype.makeURL = function makeURL(filePath){
+	var temp = this.filePath;
 	
-	if(Item.isIOS(this.group))
+	if(filePath!=null && filePath!='')
 	{
-		url = this.plistPath;
+		temp = filePath;
+	}
+
+	var dirs = temp.split(path.sep);
+	var url = '';
+	for (idx in dirs)
+	{
+		if(idx>0)
+		{
+			url += '/';
+			url += dirs[idx];
+		}
 	}
 	
-	url =  url.replace('public/','');
-	url = '../'+url;
-	
+	console.log('url='+url);
 	return url;
 };
 
+Item.prototype.getFilename = function(){
+	var fname = this.filePath.split(path.sep).reverse()[0];
+	return fname;
+};
+
 //itms-services://?action=download-manifest&url=http://192.168.0.190:2000/uploads/test/test.plist
-Item.prototype.makePlistURL = function makePlistURL(host, plist_path){
+Item.prototype.makePlistURL = function makePlistURL(host){
 	if(Item.isIOS(this.group))
 	{
-		var plist = plist_path.replace('public','');
-		this.url = 'itms-services://?action=download-manifest&url=http://' + path.join(host, plist);
+		var url = this.makeURL(this.plistPath);
+		this.url = 'itms-services://?action=download-manifest&url=http://' + host  + url;
 		console.log('plist_url='+this.url);
 	}
 };
 
-Item.prototype.makeIPAURL = function makeIPAURL(host, ipa_path){
+Item.prototype.makeIPAURL = function makeIPAURL(host){
 	if(Item.isIOS(this.group))
 	{
-		var ipa = ipa_path.replace('public','');
-		var ipa_url = 'http://' + path.join(host, ipa);
+		var url = this.makeURL();
+		var ipa_url = 'http://' + host + url;
 		console.log('ipa_url='+ipa_url);
 		return ipa_url;
 	}
@@ -241,8 +255,8 @@ Item.prototype.makePlist = function makePlist(host, appid, callback){
 	var tpath = path.join(__dirname, 'ios_template.plist');
 	var plist_path = this.plistPath;
 	
-	this.makePlistURL(host,plist_path);
-	var iap_url = this.makeIPAURL(host, this.filePath);
+	this.makePlistURL(host);
+	var iap_url = this.makeIPAURL(host);
 	
 	fs.readFile(tpath, 'utf8', function(err,data){
 		if(err){

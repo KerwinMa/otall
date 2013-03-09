@@ -1,5 +1,5 @@
 <li data-theme="c">
-	<% var fname = itemEdit.filePath.split('/').reverse()[0]%>
+    <% var fname = itemEdit.getFilename() %>
     <a href="/edit/<%=itemEdit.project%>/<%= fname %>" data-ajax="false" data-transition="slide">
 		<div class=fl_time>
 			<% if(itemEdit.group!=''){ %>

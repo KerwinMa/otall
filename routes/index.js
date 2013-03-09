@@ -7,6 +7,7 @@ var Item = require('../models/item.js');
 var settings = require('../settings');
 var crypto = require('crypto');
 var User = require('../models/user.js');
+var path = require('path');
 
 exports.index = function(req, res){
 	Project.getAll(function(err,prjs){
@@ -47,12 +48,11 @@ exports.project = function(req, res){
 		if(groupName!=""){
 			group = groupName;
 		}
-		var opmode = null;//req.body.opmode;
-		if(opmode==null){
-			opmode = req.query.opmode;
-			if(opmode==null)
-				opmode = 'download';
-		}
+
+		var	opmode = req.query.opmode;
+		if(opmode==null)
+			opmode = 'download';
+		
 		
 		
 		Item.get(prj.name, group, function(err,items){
@@ -153,10 +153,9 @@ exports.upload = function(req, res){
 
 exports.doUpload = function(req, res){
 	var fs = require('fs');
-	var path = require('path');
 	
 	var prjname = req.params.project;
-	var prjpath = path.join("./public/uploads/",prjname);
+	var prjpath = path.join("public","uploads",prjname);
 	if(!fs.existsSync(prjpath)){
 		fs.mkdir(prjpath);
 	}
@@ -177,7 +176,7 @@ exports.doUpload = function(req, res){
 			fs.unlink(file_path);
 			console.log('del '+file_path);
 		}
-		req.flash('error','错误：'+file_new_path.replace('public/uploads/','')+'已存在!');
+		req.flash('error','错误：'+file_new_path.split(path.sep).reverse()[0]+'已存在!');
 		res.redirect('/up/'+prjname);
 	 	return;
 	}
@@ -292,9 +291,8 @@ exports.doConfigPrj = function(req, res){
 
 exports.deleteItem = function(req, res){
 	var fs = require('fs');
-	var path = require('path');
 	var prjname = req.params.project;
-	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	var filepath = path.join('public','uploads',prjname,req.params.filename);
 	
 	console.log('try delete file: '+filepath+ ' of project '+prjname);
 	
@@ -325,7 +323,7 @@ exports.editItem = function(req, res){
 	
 	var prjname = req.params.project;
 	var filename = req.params.filename;
-	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	var filepath = path.join('public','uploads',prjname,req.params.filename);
 	
 	Project.get(prjname, function(err, prj){
 		if(!prj){
@@ -353,7 +351,7 @@ exports.editItem = function(req, res){
 
 exports.doEditItem = function(req,res){
 	var prjname = req.params.project;
-	var filepath = 'public/uploads/'+prjname+'/'+req.params.filename;
+	var filepath = path.join('public','uploads',prjname,req.params.filename);
 	var newGroup = req.body.group;
 	var newComment = req.body.comment;
 	

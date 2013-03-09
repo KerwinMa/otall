@@ -42,8 +42,7 @@ app.configure(function(){
   app.use(express.session({
 		secret : settings.cookie_secret,
 		cookie : {
-			//maxAge : 60000 * 20	//20 minutes
-			maxAge : 1000
+			maxAge : 60000 * 20	//20 minutes
 		},
 		store : sessionStore
 	}));

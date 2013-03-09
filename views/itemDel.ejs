@@ -1,5 +1,5 @@
 <li data-theme="c">
-	<% var fname = itemDel.filePath.split('/').reverse()[0]%>
+    <% var fname = itemDel.getFilename() %>
     <a href="/del/<%=itemDel.project%>/<%= fname %>" onClick="return conformDel();" data-ajax="false" data-transition="slide">
 		<div class=fl_time>
 			<% if(itemDel.group!=''){ %>
