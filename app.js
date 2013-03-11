@@ -42,7 +42,7 @@ app.configure(function(){
   app.use(express.session({
 		secret : settings.cookie_secret,
 		cookie : {
-			maxAge : 60000 * 20	//20 minutes
+			maxAge : 60000 * 30	//30 minutes
 		},
 		store : sessionStore
 	}));
@@ -73,6 +73,11 @@ app.get('/del/:project/:filename', routes.deleteItem);
 app.get('/edit/:project/:filename', routes.editItem);
 app.post('/edit/:project/:filename', routes.doEditItem);
 
+app.use(function(req,res,next){
+	res.render('404', { 
+		title:'404 - 找不到页面'
+	});
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

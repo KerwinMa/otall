@@ -373,21 +373,8 @@ exports.doEditItem = function(req,res){
 	});
 };
 
-exports.login = function(req, res) {
-	res.render('login', {
-		title: '用户登录',
-		user : req.session.user,
-		success : req.flash('success').toString(),
-		error : req.flash('error').toString()
-    });
-};
-
-exports.doLogin = function(req, res){
-	
-    var md5 = crypto.createHash('md5');
-    var password = md5.update(req.body.pwd).digest('base64'); 
-	
-	User.get(req.body.username, function(err, user) {
+function do_login(req, res, username, password, bSaveCookie){
+	User.get(username, function(err, user) {
 		if (!user) {
 			req.flash('error', '用户不存在');
 			return res.redirect('/');
@@ -398,11 +385,44 @@ exports.doLogin = function(req, res){
 		}
 		req.session.user = user;
 		req.flash('success', '登录成功');
+		if(bSaveCookie){
+			res.cookie('user', req.body.username, { signed:false, maxAge : 60*60*24*7});
+			res.cookie('ticket', password, { signed:false, maxAge : 60*60*24*7});
+		}
 		res.redirect('/');
 	});
 };
 
+exports.login = function(req, res) {
+	var usr = req.cookies['user'];
+	var pwd = req.cookies['ticket'];
+	if(usr != undefined && pwd != undefined){
+		console.log('login use cookie!');
+		do_login(req, res, usr, pwd, false);
+	}
+	else
+	{
+		res.render('login', {
+			title: '用户登录',
+			user : req.session.user,
+			success : req.flash('success').toString(),
+			error : req.flash('error').toString()
+	    });
+		
+	}
+};
+
+exports.doLogin = function(req, res){
+	
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.pwd).digest('base64'); 
+	
+	do_login(req, res, req.body.username, password, true);
+};
+
 exports.logout = function(req, res) {
+	res.clearCookie('user');
+	res.clearCookie('ticket');
 	req.session.user = null;
 	res.redirect('/');
 };
@@ -416,6 +436,14 @@ exports.reg = function(req, res) {
 };
 
 exports.doReg = function(req, res) {
+	//检查用户名规则
+	var user_name = req.body.username;
+	if(user_name.length>10 || user_name.length<3)
+	{
+		req.flash('error', '用户名必须为3到11位');
+		return res.redirect('/reg');
+	}
+	
 	//检查密码
     if (req.body['pwd2'] != req.body['pwd']) {
 		req.flash('error', '两次输入的密码不一致');

@@ -4,5 +4,5 @@ module.exports = {
 	host : 'localhost',
 	dbport : 27017,
 	appport : 2000,
-	version : '1.0beta'
+	version : '1.01 beta'
 }
